@@ -1,0 +1,15 @@
+include AUTHORS
+include CHANGES
+include LICENSE
+include MANIFEST.in
+include README.rst
+include setup.py
+include *.py
+
+exclude .pyc
+
+recursive-exclude . *.pyc
+
+recursive-include docs *
+recursive-include src *
+recursive-include tests *
