@@ -6,7 +6,7 @@ import logging
 from django.middleware.csrf import get_token
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from page_lock.settings import (
+from admin_page_lock.settings import (
     DISABLE_CRSF_TOKEN,
     HOMEPAGE,
     TIMEOUT,

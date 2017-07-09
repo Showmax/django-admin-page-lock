@@ -10,7 +10,7 @@ from setuptools import (
 
 
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
-INIT = os.path.join(ROOT, 'src', 'admin_page_lock', '__init__.py')
+INIT = os.path.join(ROOT, 'admin_page_lock', '__init__.py')
 APP = imp.load_source('page_lock', INIT)
 
 # Allow setup.py to be run from any path.
@@ -42,7 +42,7 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: MacOS :: MacOS X',
-        'Framework :: Django locking concurrency page view',
+        'Framework :: Django',
         'Framework :: Django :: 1.8',
         'Programming Language :: Python :: 2.7',
         'Topic :: Software Development :: Libraries :: Application Frameworks',

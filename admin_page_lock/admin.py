@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from page_lock.models.database_model import DatabasePageLockModel
+from admin_page_lock.models.database_model import DatabasePageLockModel
 
 
 class DatabasePageLockModelAdmin(admin.ModelAdmin):

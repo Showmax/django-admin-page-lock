@@ -4,13 +4,13 @@ import json
 
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
-from page_lock.settings import (
+from admin_page_lock.settings import (
     API_INTERVAL,
     CAN_OPEN_MORE_TABS,
     HANDLER_FUNCTION_GET_PAGE_INFO,
     HANDLER_FUNCTION_OPEN_PAGE_CONNECTION
 )
-from page_lock.utils import get_page_lock_classes
+from admin_page_lock.utils import get_page_lock_classes
 
 
 class BaseLockingMixin(object):

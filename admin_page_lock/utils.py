@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import importlib
 
 from django.utils.crypto import get_random_string
-from page_lock.settings import (
+from admin_page_lock.settings import (
     HANDLER_CLASS,
     MODEL
 )

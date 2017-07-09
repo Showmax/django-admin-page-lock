@@ -2,8 +2,8 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.http import HttpResponseRedirect
-from page_lock.mixins.base_mixin import BaseLockingMixin
-from page_lock.settings import DISABLE
+from admin_page_lock.mixins.base_mixin import BaseLockingMixin
+from admin_page_lock.settings import DISABLE
 
 
 class AdminLockingMixin(BaseLockingMixin):

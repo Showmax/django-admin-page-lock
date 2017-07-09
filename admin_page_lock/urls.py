@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.conf.urls import url
-from page_lock.views import (
+from admin_page_lock.views import (
     ClosePageConnection,
     GetPageInfo,
     OpenPageConnection,

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-import page_lock.models.base_model
+import admin_page_lock.models.base_model
 
 
 class Migration(migrations.Migration):
@@ -26,6 +26,6 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ('locked_at',),
             },
-            bases=(page_lock.models.base_model.BasePageLockModel, models.Model),
+            bases=(admin_page_lock.models.base_model.BasePageLockModel, models.Model),
         ),
     ]

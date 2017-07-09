@@ -11,12 +11,12 @@ from django.http import (
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import View
-from page_lock.settings import (
+from admin_page_lock.settings import (
     HANDLER_FUNCTION_CLOSE_PAGE_CONNECTION,
     HANDLER_FUNCTION_GET_PAGE_INFO,
     HANDLER_FUNCTION_OPEN_PAGE_CONNECTION
 )
-from page_lock.utils import get_page_lock_classes
+from admin_page_lock.utils import get_page_lock_classes
 
 
 class BasePageView(View):

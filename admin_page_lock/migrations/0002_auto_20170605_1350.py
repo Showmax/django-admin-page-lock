@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('page_lock', '0001_initial'),
+        ('admin_page_lock', '0001_initial'),
     ]
 
     operations = [
