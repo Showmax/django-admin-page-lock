@@ -1,6 +1,10 @@
 Changelog
 =========
-* `1.0.0 (2017-07-06)`
++ `1.0.1 (2017-07-06)`
+    Rename and re-organize structure of the project.
+
++ `1.0.0 (2017-07-06)`
     Initial version.
-* `0.1.0 (2016-12-21)`
+
++ `0.1.0 (2016-12-21)`
     Upload configuration of the project.
