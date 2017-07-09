@@ -11,5 +11,4 @@ exclude .pyc
 recursive-exclude . *.pyc
 
 recursive-include docs *
-recursive-include src *
-recursive-include tests *
+recursive-include page_lock *

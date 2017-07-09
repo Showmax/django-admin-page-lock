@@ -5,15 +5,15 @@ import os
 
 from setuptools import (
     find_packages,
-    setup,
+    setup
 )
 
+
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
-init = os.path.join(ROOT, 'src', 'admin_page_lock', '__init__.py')
-app = imp.load_source('page_lock', init)
+INIT = os.path.join(ROOT, 'src', 'admin_page_lock', '__init__.py')
+APP = imp.load_source('page_lock', INIT)
 
-
-# allow setup.py to be run from any path
+# Allow setup.py to be run from any path.
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 
@@ -22,8 +22,8 @@ def fread(fname):
 
 
 setup(
-    name=app.NAME,
-    version=app.VERSION,
+    name=APP.NAME,
+    version=APP.VERSION,
     packages=find_packages(),
     include_package_data=True,
     license='Apache License, Version 2.0',
