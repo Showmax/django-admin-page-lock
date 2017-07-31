@@ -80,7 +80,7 @@ class OpenPageConnection(BasePageView):
     """
     Call it when user wants to open/reopen page connection.
 
-    + cs    REQUEST:
+    REQUEST:
      + csrf_token           CSRF token if `DISABLE_CRSF_TOKEN == True`;
      + url                  url of locked page (with parameters);
      + user_reference       user reference visiting locked page.
