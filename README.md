@@ -29,16 +29,30 @@ your application’s defined database.
 ### Configuration
 * update template by adding:
     ```
-    <div id="page_lock_message_display"></div>
-    <div id="page_lock_counter_display"></div>
-    <button type="button" id="page_lock_refresh_button">{% trans "REFRESH" %}</button>
-    <button type="button" id="page_lock_reload_button">{% trans "RELOAD" %}</button>
-    <input type="hidden" id="page_lock_template_data" value="{{ page_lock_template_data }}">
-    <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
+    <div id="page_lock_bar">
+        <div id="page_lock_message_display"></div>
+        <div id="page_lock_counter_display"></div>
+        <button type="button" id="page_lock_refresh_button">{% trans "REFRESH" %}</button>
+        <button type="button" id="page_lock_reload_button">{% trans "RELOAD" %}</button>
+        <input type="hidden" id="page_lock_template_data" value="{{ page_lock_template_data }}">
+        <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
+    </div>
     ```
+  Note:
+  * to hide locking buttons for pages where locking logic is not needed, update template by adding js block:
+  ```
+  <script type="text/javascript">
+    $(document).ready(function() {
+        var api_interval = parseInt($('#page_lock_api_interval').val());
+        if (!api_interval) {
+            $('.page_lock_bar').hide();
+        }
+    });
+  </script>
+  ```;
 * mark `html` items by `class=page_lock_block` to hide/show them;
 * update `css` file in order to enhance included `html` code;
-* views where you want to apply locking logic must be inherited from either `AdminLockingMixin` or `LockPageViewMixin` for `django admin views` or `django views`, respectively;
+* views where you want to apply locking logic must be inherited from either `LockPageAdminMixin` or `LockPageViewMixin` for `django admin views` or `django views`, respectively;
 * re-define parameters in your settings if you don't want to use default ones:
 
 | Name                   | Type       | Description                                        |
@@ -97,13 +111,15 @@ the functionality of first one doesn't change anything but second one.
 
 
 ### TODO
-There are still several functionalities missing. I am appreciate any contribution.
+There are still several functionalities missing. I would appreciate any contribution.
 * writing unit tests;
 * finish using `CAN_OPEN_MORE_TABS` settings parameter;
 * migrating logic related to reopening from `OpenPageConnection` to new API `ReopenPageConnection`;
-* implement custom messages and message logic.
 
 ### To be implemented soon:
 1. User lands on page. Page is locked for only this user.
-2. Other user attempts to open page
+2. Other user attempts to open page.
 3. Other users get redirected to landing page (homepage, create new, and so on).
+
+### Useres
+* Showmax uses this package as part of Content Management System.

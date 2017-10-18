@@ -5,15 +5,11 @@ import json
 import smhasher
 
 from collections import namedtuple
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
-from django_extensions.db.fields.json import JSONField
 from admin_page_lock.models.base_model import BasePageLockModel
 from admin_page_lock.settings import (
-    PAGE_LOCK_TIMEOUT,
+    TIMEOUT,
     REDIS_PREFIX,
     REDIS_SETTINGS,
-    URL_IGNORE_PARAMETERS
 )
 from redis import StrictRedis
 from redis.exceptions import RedisError
@@ -142,7 +138,7 @@ class RedisPageLockModel(BasePageLockModel):
             redis_client.set(
                 page_reference,
                 json.dumps(data_to_store),
-                PAGE_LOCK_TIMEOUT
+                TIMEOUT
             )
         except RedisError:
             raise

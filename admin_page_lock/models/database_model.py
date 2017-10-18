@@ -1,12 +1,8 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
-from django_extensions.db.fields.json import JSONField
 from admin_page_lock.models.base_model import BasePageLockModel
-from admin_page_lock.settings import (
-    URL_IGNORE_PARAMETERS
-)
+from admin_page_lock.settings import URL_IGNORE_PARAMETERS
 
 
 class DatabasePageLockModel(BasePageLockModel, models.Model):
@@ -78,6 +74,6 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
 
     class Meta:
         ordering = ('locked_at',)
-        app_label = 'page_lock'
+        app_label = 'admin_page_lock'
         verbose_name = 'Page Lock'
         verbose_name_plural = 'Page Locks'

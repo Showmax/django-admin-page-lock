@@ -2,13 +2,9 @@ from __future__ import unicode_literals
 
 import json
 
-from django.core.handlers.wsgi import WSGIRequest
-from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django_extensions.db.fields.json import JSONField
 from admin_page_lock.settings import (
     MESSAGES,
-    TIMEOUT,
     URL_IGNORE_PARAMETERS
 )
 from urlparse import (

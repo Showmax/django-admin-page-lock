@@ -1,10 +1,18 @@
 $(document).ready(function() {
     // Global values.
-    var api_interval = $('#page_lock_api_interval').val();
-    var allow_deactivation = true;
+    var api_interval = parseInt($('#page_lock_api_interval').val());
     var csrf_token;
     var data_to_process;
     var user_reference;
+    var messages;
+
+    // End the script if `api_interval` is not defined.
+    if (!api_interval) {
+        return;
+    }
+
+    // Show page_lock_bar.
+    $('#page_lock_bar').show();
 
     // Hide all buttons.
     $('#page_lock_refresh_button').hide();
@@ -12,7 +20,6 @@ $(document).ready(function() {
 
     // Refresh page by clicking the button.
     $('#page_lock_refresh_button').on('click', function(){
-        allow_deactivation = false;
         $(location).attr('href', get_full_url());
     });
 
@@ -61,7 +68,9 @@ $(document).ready(function() {
 
     // Get data from template.
     var get_template_data = function() {
-        return JSON.parse($('#page_lock_template_data').val());
+        var template_data = JSON.parse($('#page_lock_template_data').val());
+        messages = template_data.page_lock_settings.messages;
+        return template_data;
     };
 
     var call_api = function(url) {
@@ -79,9 +88,10 @@ $(document).ready(function() {
 
         } while (!response && num <= 3);
 
-        //When response is `null` then warn user by dialog and
+        // When response is `null` then warn user by dialog and
         // redirect him to the homepage.
         if (!response) {
+            alert(messages.message_problem);
             redirect_to_homepage();
         }
 
@@ -101,19 +111,24 @@ $(document).ready(function() {
     }
 
     var update_page = function(data) {
-        // Update counter.
-        // TODO(vstefka) add message based on API result.
-        $('#page_lock_counter_display').text(data.reconnect_in + ' ' + 'seconds');
+        $('#page_lock_message_display').text(messages.message_locked);
 
+        // Show page_lock_menu.
+        $('#page_lock_bar').show();
+
+        // Update counter.
+        $('#page_lock_counter_display').text(data.reconnect_in + ' ' + 'seconds');
 
         // Show `REFRESH BUTTON` when page is not locked.
         if (!data.is_locked) {
             $('#page_lock_refresh_button').show();
+            $('#page_lock_message_display').text(messages.message_refresh);
         }
 
         // Show `RELOAD BUTTON` only for user that locks current page.
         if (data.is_locked && user_reference == data.locked_by) {
             $('#page_lock_reload_button').show();
+            $('#page_lock_message_display').text(messages.message_reload);
         }
 
         // Hide `page_lock_block`
@@ -121,9 +136,8 @@ $(document).ready(function() {
             $('.page_lock_block').hide();
         }
 
-
         // Redirect to homepage when `reconnect_in` is equal to zero.
-        if (data.reconnect_in == 0) {
+        if (data.reconnect_in == 0 && user_reference == data.locked_by) {
             redirect_to_homepage();
         }
     }
@@ -148,16 +162,14 @@ $(document).ready(function() {
     window.process_data_interval = setInterval(periodical_update, api_interval);
 
     // Deactivate user leaving current page.
-    $(window).on('unload', function() {
+    $(window).on('beforeunload', function() {
         // When user click `REFRESH` button then page lock can not deactivate same user refreshing page.
-        if (allow_deactivation) {
-            var url = get_base_url() + '/page_lock/close_page_connection/';
-            var data = {
-                'url': get_full_url(),
-                'user_reference': user_reference,
-            };
-            response = send_request(url, data);
-            clearInterval(window.process_data_interval);
-        }
+        var url = get_base_url() + '/page_lock/close_page_connection/';
+        var data = {
+            'url': get_full_url(),
+            'user_reference': user_reference,
+        };
+        response = send_request(url, data);
+        clearInterval(window.process_data_interval);
     });
 });

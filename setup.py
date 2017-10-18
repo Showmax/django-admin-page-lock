@@ -30,7 +30,7 @@ setup(
     description='Page Lock application prevents users being able to edit '
                 'same page defined by its unique URL at the same time. '
                 'The application is tailored to django admin implementation.',
-    long_description=fread('README.rst'),
+    long_description=fread('README.md'),
     url='https://github.com/ShowMax/django-admin-page-lock',
     author='Vojtech Stefka',
     author_email='vojtech.stefka@gmail.com',

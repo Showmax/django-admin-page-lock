@@ -17,7 +17,7 @@ CAN_OPEN_MORE_TABS = getattr(
 
 # CRFS token.
 DISABLE_CRSF_TOKEN_DEFAULT = False
-DISABLE_CRSF_TOKEN_REFERENCE = 'DISABLE_CRSF_TOKEN'
+DISABLE_CRSF_TOKEN_REFERENCE = 'PAGE_LOCK_DISABLE_CRSF_TOKEN'
 DISABLE_CRSF_TOKEN = getattr(
     settings, DISABLE_CRSF_TOKEN_REFERENCE, DISABLE_CRSF_TOKEN_DEFAULT)
 
@@ -27,7 +27,7 @@ DISABLE_REFERENCE = 'PAGE_LOCK_DISABLE'
 DISABLE = getattr(settings, DISABLE_REFERENCE, DISABLE_DEFAULT)
 
 # Handler.
-HANDLER_CLASS_DEFAULT = 'page_lock.handlers.PageLockHandler'
+HANDLER_CLASS_DEFAULT = 'admin_page_lock.handlers.PageLockHandler'
 HANDLER_CLASS_REFERENCE = 'PAGE_LOCK_HANDLER_CLASS'
 HANDLER_CLASS = getattr(
     settings, HANDLER_CLASS_REFERENCE, HANDLER_CLASS_DEFAULT)
@@ -44,21 +44,21 @@ HOMEPAGE = getattr(settings, HOMEPAGE_REFERENCE, HOMEPAGE_DEFAULT)
 
 # Messages (see documentation).
 MESSAGES_DEFAUL = {
-    'message_1': _('Page is locked by {}.'),
-    'mesasge_2': _('Page will be unlocked in {} seconds. Click "RELOCK" button to stay on the page.'),  # noqa
-    'message_3': _('Page will be available in {} seconds. Click "REFRESH" button when it appears.'),  # noqa
-    'message_4': _('Something hapened, you will be redirected to homepage.'),
+    'message_locked': _('Page is locked.'),
+    'message_reload': _('You are the one who can edit. Click "RELOAD" button to stay on the page.'),
+    'message_refresh': _('Click "REFRESH" button to start editting.'),
+    'message_problem': _('Something happened, you will be redirected to homepage.'),  # noqa
 }
 MESSAGES_REFERENCE = 'PAGE_LOCK_MESSAGES'
 MESSAGES = getattr(settings, MESSAGES_REFERENCE, MESSAGES_DEFAUL)
 
 # Times (see documentation).
-TIMEOUT_DEFAUTL = 6000  # [s]
+TIMEOUT_DEFAULT = 6000  # [s]
 TIMEOUT_REFERENCE = 'PAGE_LOCK_TIMEOUT'
-TIMEOUT = getattr(settings, TIMEOUT_REFERENCE, TIMEOUT_DEFAUTL)
+TIMEOUT = getattr(settings, TIMEOUT_REFERENCE, TIMEOUT_DEFAULT)
 
 # Model.
-MODEL_DEFAULT = 'page_lock.models.database_model.DatabasePageLockModel'
+MODEL_DEFAULT = 'admin_page_lock.models.database_model.DatabasePageLockModel'
 MODEL_REFERENCE = 'PAGE_LOCK_MODEL'
 MODEL = getattr(settings, MODEL_REFERENCE, MODEL_DEFAULT)
 

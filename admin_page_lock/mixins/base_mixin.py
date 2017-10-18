@@ -21,25 +21,28 @@ class BaseLockingMixin(object):
         # Adding extra content.
         extra_context = {
             'page_lock_template_data': json.dumps(data),
-            'page_lock_api_interval': API_INTERVAL
+            'page_lock_api_interval': int(API_INTERVAL)  # must be integer
         }
 
-        # Adding message when page is locked.
         if (
             data['is_locked'] and
             data['page_lock_settings']['user_reference'] != data['locked_by']  # noqa
         ):
+            # Adding message when page is locked.
             self._add_message(req, data)
 
         return extra_context
 
     def _add_message(self, req, data):
         # Adding message when page is locked.
-        messages.info(req, _('This page is locked by user "{}".'.format(
+        # TODO(vstefka) move message to settings.
+        # TODO(vstefka) add setting attribute to hide the message.
+        messages.warning(req, _('This page is locked by user "{}".'.format(
             data['locked_by']
         )))
 
-    def _get_api_data(self, req, handler_function_name):
+    @classmethod
+    def _get_api_data(cls, req, handler_function_name):
         # Input argument `handler_function_name` must be one of defined in
         # settings.
         meta_name = '{}_data'.format(handler_function_name)
@@ -57,13 +60,15 @@ class BaseLockingMixin(object):
 
         return req.META[meta_name]
 
-    def _get_page_info_data(self, req):
-        return self._get_api_data(req, HANDLER_FUNCTION_GET_PAGE_INFO)
+    @classmethod
+    def _get_page_info_data(cls, req):
+        return cls._get_api_data(req, HANDLER_FUNCTION_GET_PAGE_INFO)
 
-    def _is_locked(self, req):
+    @classmethod
+    def _is_locked(cls, req):
         # Returns `True` if the current page is not locked by same user
         # otherwise returns `False`.
-        result = self._get_page_info_data(req)
+        result = cls._get_page_info_data(req)
         if (
             result['is_locked'] and
             result['page_lock_settings']['user_reference'] != result['locked_by']  # noqa

@@ -9,8 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from admin_page_lock.settings import (
     DISABLE_CRSF_TOKEN,
     HOMEPAGE,
-    TIMEOUT,
-    URL_IGNORE_PARAMETERS,
+    TIMEOUT
 )
 
 
@@ -35,8 +34,7 @@ class PageLockHandler(object):
         lock_settings = {
             'csrf_token': get_token(self.page_settings['req']) if not DISABLE_CRSF_TOKEN else '',  # noqa
             'homepage': HOMEPAGE,
-            # TODO(vstefka) add message system.
-            #            'messages': self.page_settings['messages'],
+            'messages': self.page_settings['messages'],
             'user_reference': self.page_settings['user_reference'],
         }
 
