@@ -3,7 +3,7 @@ include CHANGES
 include LICENSE
 include MANIFEST.in
 include README.md
-include setup.pyi
+include setup.py
 include setup.cfg
 include *.py
 

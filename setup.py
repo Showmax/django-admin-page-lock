@@ -10,6 +10,7 @@ from setuptools import (
 
 
 ROOT = os.path.realpath(os.path.join(os.path.dirname(__file__)))
+README_FILE = os.path.join(ROOT, 'README.md')
 INIT = os.path.join(ROOT, 'admin_page_lock', '__init__.py')
 APP = imp.load_source('page_lock', INIT)
 
@@ -30,7 +31,7 @@ setup(
     description='Page Lock application prevents users being able to edit '
                 'same page defined by its unique URL at the same time. '
                 'The application is tailored to django admin implementation.',
-    long_description=fread('README.md'),
+    long_description=fread(README_FILE),
     url='https://github.com/ShowMax/django-admin-page-lock',
     author='Vojtech Stefka',
     author_email='vojtech.stefka@gmail.com',
