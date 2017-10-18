@@ -2,8 +2,9 @@ include AUTHORS
 include CHANGES
 include LICENSE
 include MANIFEST.in
-include README.rst
-include setup.py
+include README.md
+include setup.pyi
+include setup.cfg
 include *.py
 
 exclude .pyc
