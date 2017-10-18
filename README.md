@@ -121,5 +121,5 @@ There are still several functionalities missing. I would appreciate any contribu
 2. Other user attempts to open page.
 3. Other users get redirected to landing page (homepage, create new, and so on).
 
-### Useres
+### Users
 * Showmax uses this package as part of Content Management System.
