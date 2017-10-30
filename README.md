@@ -52,7 +52,7 @@ your application’s defined database.
   ```;
 * mark `html` items by `class=page_lock_block` to hide/show them;
 * update `css` file in order to enhance included `html` code;
-* views where you want to apply locking logic must be inherited from either `LockPageAdminMixin` or `LockPageViewMixin` for `django admin views` or `django views`, respectively;
+* views where you want to apply locking logic must be inherited from either `PageLockAdminMixin` or `PageLockViewMixin` for `django admin views` or `django views`, respectively;
 * re-define parameters in your settings if you don't want to use default ones:
 
 | Name                   | Type       | Description                                        |

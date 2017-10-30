@@ -4,13 +4,13 @@ from admin_page_lock.mixins.base_mixin import BaseLockingMixin
 from admin_page_lock.settings import DISABLE
 
 
-class LockPageViewMixin(BaseLockingMixin):
+class PageLockViewMixin(BaseLockingMixin):
     def dispatch(self, req, *args, **kwargs):
         self.req = req
-        return super(LockPageViewMixin, self).dispatch(req, *args, **kwargs)
+        return super(PageLockViewMixin, self).dispatch(req, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(LockPageViewMixin, self).get_context_data(**kwargs)
+        context = super(PageLockViewMixin, self).get_context_data(**kwargs)
 
         if not DISABLE:
             result = self._open_page_connection_data(self.req)
