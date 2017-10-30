@@ -1,5 +1,8 @@
 Changelog
 =========
++ `1.1.3 (2017-10-30`)
+    Update warning message.
+
 + `1.1.2 (2017-10-18`)
     Fix configuration of the package.
 

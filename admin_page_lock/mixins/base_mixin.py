@@ -37,9 +37,7 @@ class BaseLockingMixin(object):
         # Adding message when page is locked.
         # TODO(vstefka) move message to settings.
         # TODO(vstefka) add setting attribute to hide the message.
-        messages.warning(req, _('This page is locked by user "{}".'.format(
-            data['locked_by']
-        )))
+        messages.warning(req, _('This page is locked another user.'))
 
     @classmethod
     def _get_api_data(cls, req, handler_function_name):

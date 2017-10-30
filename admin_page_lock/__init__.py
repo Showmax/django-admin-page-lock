@@ -1,2 +1,2 @@
 NAME = 'django-admin-page-lock'
-VERSION = '1.1.2'
+VERSION = '1.1.3'
