@@ -8,7 +8,6 @@ from django.http import (
     HttpResponse,
     HttpResponseServerError,
 )
-from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import View
 from admin_page_lock.settings import (
@@ -33,8 +32,7 @@ class BasePageView(View):
             # Get and run handler function to get response data.
             handler_function = getattr(handler, self.HANDLER_FUNCTION)
             response_data = handler_function(req, *args, **kwargs)
-
-        except Exception as e:
+        except Exception:
             logging.error(traceback.format_exc())
             return HttpResponseServerError(_('Some error occured.'))
 

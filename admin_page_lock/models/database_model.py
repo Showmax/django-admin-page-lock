@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils import timezone
 from admin_page_lock.models.base_model import BasePageLockModel
 from admin_page_lock.settings import URL_IGNORE_PARAMETERS
 
@@ -29,10 +30,9 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
 
     @classmethod
     def _get_query_kwargs(cls, page_settings):
-        # TODO(vstefka) take into account also time.
         query_kwargs = {
             'active': True,
-            'url': page_settings['page_url']
+            'url': page_settings['page_url'],
         }
         if not URL_IGNORE_PARAMETERS:
             query_kwargs['url_parameters'] = page_settings['page_url_parameters']  # noqa
@@ -60,6 +60,13 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
             'locked_out': page_lock.locked_out,
             'user_reference': page_lock.user_reference
         }
+
+    def save(self, *args, **kwargs):
+        # Deactive all instance with `locked_out` older then now.
+        if self.locked_out < timezone.now():
+            self.active = False
+
+        super(DatabasePageLockModel, self).save(*args, **kwargs)
 
     @classmethod
     def set_data(cls, page_settings, data):

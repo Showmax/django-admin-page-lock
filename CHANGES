@@ -1,5 +1,9 @@
 Changelog
 =========
++ `1.2.1 (2017-12-02)`
+    Warning lock message updated by adding `user_reference` in most classes
+    it's `username` plus deactivate old lock records.
+
 + `1.2.0 (2017-10-30`)
     Fix naming by renaming `LockPage*` to `PageLock*`.
 

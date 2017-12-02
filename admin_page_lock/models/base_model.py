@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import json
 
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext_lazy as _
 from admin_page_lock.settings import (
     MESSAGES,
@@ -93,7 +94,7 @@ class BasePageLockModel(object):
     @classmethod
     def _get_username(cls, req):
         if hasattr(req, 'user'):
-            return req.user.pk
+            return req.user.username
 
         return None
 

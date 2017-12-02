@@ -138,7 +138,7 @@ class RedisPageLockModel(BasePageLockModel):
             redis_client.set(
                 page_reference,
                 json.dumps(data_to_store),
-                TIMEOUT
+                TIMEOUT  # This deactives old records.
             )
         except RedisError:
             raise
