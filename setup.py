@@ -34,7 +34,7 @@ setup(
     long_description=fread(README_FILE),
     url='https://github.com/ShowMax/django-admin-page-lock',
     author='Vojtech Stefka',
-    author_email='vojtech.stefka@gmail.com',
+    author_email='oss+djangopage@showmax.com',
     keywords=['django', 'admin', 'locking', 'concurrency'],
     install_requires=[],
     classifiers=[
