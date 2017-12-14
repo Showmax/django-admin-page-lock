@@ -50,7 +50,7 @@ KEEP_DB_LOCKS = getattr(settings, KEEP_DB_LOCKS_REFERENCE, KEEP_DB_LOCKS_DEFAULT
 # Messages (see documentation).
 MESSAGES_DEFAUL = {
     'message_locked': _('Page is locked.'),
-    'message_reload': _('You are the one who can edit. Click "RELOAD" button to stay on the page.'),  # noqa: E501: E501
+    'message_reload': _('You are the one who can edit. Click "RELOAD" button to stay on the page.'),  # noqa: E501
     'message_refresh': _('Click "REFRESH" button to start editting.'),
     'message_problem': _('Something happened, you will be redirected to homepage.'),  # noqa: E501
 }
