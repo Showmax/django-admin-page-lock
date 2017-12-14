@@ -21,6 +21,10 @@ class DatabasePageLockModelAdmin(admin.ModelAdmin):
         'formated_locked_at',
         'formated_locked_out',
     )
+    list_filter = (
+        'active',
+        'user_reference',
+    )
     list_per_page = 20
     ordering = ('-locked_at',)
 
@@ -31,14 +35,15 @@ class DatabasePageLockModelAdmin(admin.ModelAdmin):
         return self._get_formated_datetime(obj.locked_at)
     formated_locked_at.admin_order_field = 'locked_at'
     formated_locked_at.allow_tags = True
-    formated_locked_at.short_description = DatabasePageLockModel._meta.get_field(  # noqa
+    formated_locked_at.short_description = DatabasePageLockModel._meta.get_field(  # noqa: E501
         'locked_at').verbose_name
 
     def formated_locked_out(self, obj):
         return self._get_formated_datetime(obj.locked_out)
     formated_locked_out.admin_order_field = 'locked_at'
     formated_locked_out.allow_tags = True
-    formated_locked_out.short_description = DatabasePageLockModel._meta.get_field(  # noqa
+    formated_locked_out.short_description = DatabasePageLockModel._meta.get_field(  # noqa: E501
         'locked_out').verbose_name
+
 
 admin.site.register(DatabasePageLockModel, DatabasePageLockModelAdmin)

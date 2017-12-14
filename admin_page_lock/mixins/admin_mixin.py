@@ -46,7 +46,7 @@ class PageLockAdminMixin(BaseLockingMixin):
                 for i, j in form.base_fields.items()
                 if issubclass(type(j), forms.FileField)
             ]:
-                form.base_fields[field_name].widget.attrs['disabled'] = 'disabled'  # noqa
+                form.base_fields[field_name].widget.attrs['disabled'] = 'disabled'  # noqa: E501
 
         return form
 
@@ -58,7 +58,7 @@ class PageLockAdminMixin(BaseLockingMixin):
         return super(PageLockAdminMixin, self).get_prepopulated_fields(req, obj)
 
     def get_readonly_fields(self, req, obj=None):
-        readonly_fields = super(PageLockAdminMixin, self).get_readonly_fields(req, obj)  # noqa
+        readonly_fields = super(PageLockAdminMixin, self).get_readonly_fields(req, obj)  # noqa: E501
 
         if self._is_locked(req):
             readonly_fields = list(readonly_fields) + list(
@@ -77,7 +77,7 @@ class PageLockAdminMixin(BaseLockingMixin):
         return False
 
     def has_delete_permission(self, req, obj=None):
-        can_delete = super(PageLockAdminMixin, self).has_delete_permission(req, obj)  # noqa
+        can_delete = super(PageLockAdminMixin, self).has_delete_permission(req, obj)  # noqa: E501
 
         if can_delete and not self._is_locked(req):
             return True

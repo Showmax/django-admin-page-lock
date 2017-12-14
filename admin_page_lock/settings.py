@@ -42,12 +42,17 @@ HOMEPAGE_DEFAULT = '/'
 HOMEPAGE_REFERENCE = 'PAGE_LOCK_HOMEPAGE'
 HOMEPAGE = getattr(settings, HOMEPAGE_REFERENCE, HOMEPAGE_DEFAULT)
 
+# Keep DB locks (possible to see history).
+KEEP_DB_LOCKS_DEFAULT = False
+KEEP_DB_LOCKS_REFERENCE = 'PAGE_LOCK_KEEP_DB_LOCKS'
+KEEP_DB_LOCKS = getattr(settings, KEEP_DB_LOCKS_REFERENCE, KEEP_DB_LOCKS_DEFAULT)  # noqa: E501
+
 # Messages (see documentation).
 MESSAGES_DEFAUL = {
     'message_locked': _('Page is locked.'),
-    'message_reload': _('You are the one who can edit. Click "RELOAD" button to stay on the page.'),
+    'message_reload': _('You are the one who can edit. Click "RELOAD" button to stay on the page.'),  # noqa: E501: E501
     'message_refresh': _('Click "REFRESH" button to start editting.'),
-    'message_problem': _('Something happened, you will be redirected to homepage.'),  # noqa
+    'message_problem': _('Something happened, you will be redirected to homepage.'),  # noqa: E501
 }
 MESSAGES_REFERENCE = 'PAGE_LOCK_MESSAGES'
 MESSAGES = getattr(settings, MESSAGES_REFERENCE, MESSAGES_DEFAUL)

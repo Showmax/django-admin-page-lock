@@ -1,5 +1,8 @@
 Changelog
 =========
++ `1.2.2 (2017-12-14)`
+    Possible to keep DB locks in order to see user activity (time, username, ...).
+
 + `1.2.1 (2017-12-02)`
     Warning lock message updated by adding `user_reference` in most classes
     it's `username` plus deactivate old lock records.

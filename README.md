@@ -15,6 +15,7 @@ your application’s defined database.
 * two models are available that define storing/loading data from storage (`redis` or `database`);
 * developer can disable whole locking functionality;
 * page url being lock can be composed with or without url parameters;
+* possible to keep history of locks (time, username, ...);
 * very customizable.
 
 ### Requirements
@@ -63,6 +64,7 @@ your application’s defined database.
 | DISABLE                | boolean    | switching off/on locking logic                     |
 | HANDLER_CLASS          | string     | in case you want to define your handler            |
 | HOMEPAGE               | string     | page to redirect user if something goes wrong      |
+| KEEP_DB_LOCKS          | boolean    | keep locking history (only for DB model)           |
 | MESSAGES               | dictionary | for customizing messages (not implemented yet)     |
 | TIMEOUT                | integer    | interval user stays on the page without refreshing |
 | MODEL                  | string     | where data are stored (`redis` or `database`)      |
@@ -122,4 +124,4 @@ There are still several functionalities missing. I would appreciate any contribu
 3. Other users get redirected to landing page (homepage, create new, and so on).
 
 ### Users
-* Showmax uses this package as part of Content Management System.
+* ShowMax uses this package as part of Content Management System.
