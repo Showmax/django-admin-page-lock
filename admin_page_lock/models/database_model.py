@@ -63,12 +63,12 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
         page_locks = page_locks.filter(locked_out__gt=timezone.now())
 
         # Filter out data with `locked_out` older then now
-        # minus API_INTERVAL_DEFAULT.
+        # minus 2 * API_INTERVAL_DEFAULT.
         t = timezone.now() - datetime.timedelta(
-            milliseconds=API_INTERVAL_DEFAULT)
+            milliseconds=2 * API_INTERVAL_DEFAULT)
         page_locks = page_locks.filter(locked_out__gt=t)
 
-        # Get the lates instance of `DatabasePageLockModel` and check
+        # Get the latest instance of `DatabasePageLockModel` and check
         # its existence.
         page_lock = page_locks.first()
         if (
