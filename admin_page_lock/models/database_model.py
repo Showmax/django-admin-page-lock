@@ -1,9 +1,12 @@
 from __future__ import unicode_literals
 
+import datetime
+
 from django.db import models
 from django.utils import timezone
 from admin_page_lock.models.base_model import BasePageLockModel
 from admin_page_lock.settings import (
+    API_INTERVAL_DEFAULT,
     KEEP_DB_LOCKS,
     URL_IGNORE_PARAMETERS,
 )
@@ -59,10 +62,20 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
         # Filter out data with `locked_out` older then now.
         page_locks = page_locks.filter(locked_out__gt=timezone.now())
 
-        if not page_locks.exists():
-            return None
+        # Filter out data with `locked_out` older then now
+        # minus API_INTERVAL_DEFAULT.
+        t = timezone.now() - datetime.timedelta(
+            milliseconds=API_INTERVAL_DEFAULT)
+        page_locks = page_locks.filter(locked_out__gt=t)
 
+        # Get the lates instance of `DatabasePageLockModel` and check
+        # its existence.
         page_lock = page_locks.first()
+        if (
+            page_lock is None or
+            not isinstance(page_lock, cls)
+        ):
+            return None
 
         return {
             'locked_at': page_lock.locked_at,
