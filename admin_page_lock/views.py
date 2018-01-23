@@ -1,14 +1,10 @@
 from __future__ import unicode_literals
 
 import json
-import logging
-import traceback
 
 from django.http import (
     HttpResponse,
-    HttpResponseServerError,
 )
-from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import View
 from admin_page_lock.settings import (
     HANDLER_FUNCTION_CLOSE_PAGE_CONNECTION,
@@ -32,9 +28,9 @@ class BasePageView(View):
             # Get and run handler function to get response data.
             handler_function = getattr(handler, self.HANDLER_FUNCTION)
             response_data = handler_function(req, *args, **kwargs)
-        except Exception:
-            logging.error(traceback.format_exc())
-            return HttpResponseServerError(_('Some error occured.'))
+        except Exception as e:
+            # Propagate error to django in order to be able to log it.
+            raise e
 
         response = HttpResponse(
             json.dumps(response_data),
