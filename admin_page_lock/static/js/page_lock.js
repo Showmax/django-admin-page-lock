@@ -3,6 +3,7 @@ $(document).ready(function() {
     var api_interval = parseInt($('#page_lock_api_interval').val());
     var csrf_token;
     var data_to_process;
+    var locked_by_me;
     var user_reference;
     var messages;
 
@@ -137,7 +138,7 @@ $(document).ready(function() {
         }
 
         // Redirect to homepage when `reconnect_in` is equal to zero.
-        if (data.reconnect_in == 0 && user_reference == data.locked_by) {
+        if (data.reconnect_in == 0 && locked_by_me) {
             redirect_to_homepage();
         }
     }
@@ -148,6 +149,7 @@ $(document).ready(function() {
             data_to_process = get_template_data();
             csrf_token = data_to_process.page_lock_settings.csrf_token;
             user_reference = data_to_process.page_lock_settings.user_reference;
+            locked_by_me = user_reference == data_to_process.locked_by;
         } else {
             // Get data from info API.
             data_to_process = call_get_page_info_data();
