@@ -8,11 +8,11 @@ from admin_page_lock.settings import (
     MESSAGES,
     URL_IGNORE_PARAMETERS
 )
-from urlparse import (
-    parse_qsl,
-    urlparse,
-    urlsplit,
-)
+
+try:
+    from urllib.parse import parse_qsl, urlparse, urlsplit
+except ImportError:
+    from urlparse import parse_qsl, urlparse, urlsplit
 
 
 class BasePageLockModel(object):
