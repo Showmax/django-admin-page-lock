@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django import forms
+from django.http import HttpResponseRedirect
 from admin_page_lock.mixins.base_mixin import BaseLockingMixin
 from admin_page_lock.settings import DISABLE
 
@@ -12,12 +13,18 @@ class PageLockAdminMixin(BaseLockingMixin):
             extra_context = {} if extra_context is None else extra_context
             extra_context.update(self._add_extra_content(req, result))
 
-        return super(PageLockAdminMixin, self).change_view(
+        response = super(PageLockAdminMixin, self).change_view(
             req,
             object_id,
             form_url,
             extra_context=extra_context
         )
+        if isinstance(response, HttpResponseRedirect):
+            # Unlock the page if redirected.
+            # Important when there is a redirect after saving a form.
+            self._close_page_connection_data(req)
+
+        return response
 
     def changelist_view(self, req, extra_context=None):
         if not DISABLE and self.lock_changelist_view:
@@ -25,10 +32,16 @@ class PageLockAdminMixin(BaseLockingMixin):
             extra_context = {} if extra_context is None else extra_context
             extra_context.update(self._add_extra_content(req, result))
 
-        return super(PageLockAdminMixin, self).changelist_view(
+        response = super(PageLockAdminMixin, self).changelist_view(
             req,
             extra_context=extra_context
         )
+        if isinstance(response, HttpResponseRedirect):
+            # Unlock the page if redirected.
+            # Important when there is a redirect after saving a form.
+            self._close_page_connection_data(req)
+
+        return response
 
     def get_actions(self, req):
         # TODO(vstefka) hide only actions that can change db.
@@ -46,7 +59,8 @@ class PageLockAdminMixin(BaseLockingMixin):
                 for i, j in form.base_fields.items()
                 if issubclass(type(j), forms.FileField)
             ]:
-                form.base_fields[field_name].widget.attrs['disabled'] = 'disabled'  # noqa: E501
+                form.base_fields[field_name].widget \
+                    .attrs['disabled'] = 'disabled'
 
         return form
 
@@ -55,10 +69,12 @@ class PageLockAdminMixin(BaseLockingMixin):
         if self._is_locked(req):
             return {}
 
-        return super(PageLockAdminMixin, self).get_prepopulated_fields(req, obj)
+        return super(
+            PageLockAdminMixin, self).get_prepopulated_fields(req, obj)
 
     def get_readonly_fields(self, req, obj=None):
-        readonly_fields = super(PageLockAdminMixin, self).get_readonly_fields(req, obj)  # noqa: E501
+        readonly_fields = super(
+            PageLockAdminMixin, self).get_readonly_fields(req, obj)
 
         if self._is_locked(req):
             readonly_fields = list(readonly_fields) + list(
@@ -77,7 +93,8 @@ class PageLockAdminMixin(BaseLockingMixin):
         return False
 
     def has_delete_permission(self, req, obj=None):
-        can_delete = super(PageLockAdminMixin, self).has_delete_permission(req, obj)  # noqa: E501
+        can_delete = super(
+            PageLockAdminMixin, self).has_delete_permission(req, obj)
 
         if can_delete and not self._is_locked(req):
             return True

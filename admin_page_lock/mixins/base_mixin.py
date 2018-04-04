@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from admin_page_lock.settings import (
     API_INTERVAL,
     CAN_OPEN_MORE_TABS,
+    HANDLER_FUNCTION_CLOSE_PAGE_CONNECTION,
     HANDLER_FUNCTION_GET_PAGE_INFO,
     HANDLER_FUNCTION_OPEN_PAGE_CONNECTION
 )
@@ -77,6 +78,9 @@ class BaseLockingMixin(object):
             return True
 
         return False
+
+    def _close_page_connection_data(self, req):
+        return self._get_api_data(req, HANDLER_FUNCTION_CLOSE_PAGE_CONNECTION)
 
     def _open_page_connection_data(self, req):
         return self._get_api_data(req, HANDLER_FUNCTION_OPEN_PAGE_CONNECTION)
