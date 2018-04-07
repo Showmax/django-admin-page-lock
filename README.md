@@ -1,21 +1,23 @@
 ## Django Admin Page Lock
 
-Page Lock for Django Admin allows developers to implement customizable locking pages.
+Page Lock for Django Admin allows developers to implement customizable locking of pages.
 With Admin Page Locking, only the designated (typically first) user receives full rights.
-Subsequent users get only rights assigned by the administrator. You can store page log data in
+Subsequent users only get rights assigned by the administrator. You can store page lock data in
 your application’s defined database.
 
+Read more on [our blog](https://tech.showmax.com/2018/02/django-admin-page-lock/).
+
 #### Use Case:
-1. User-1 lands on page. User1 has full rights (editing).
-2. Users-N can land and view page, but cannot use full rights (no editing).
+1. User-1 lands on a page. User1 has full rights (editing).
+2. Users-N can view the page, but cannot use full rights (no editing).
 3. User-1 leaves.
 4. Whoever next enters, or refreshes, becomes User-1.
 
 ### Features
-* two models are available that define storing/loading data from storage (`redis` or `database`);
+* two models for data storage (`redis` or `database`);
 * developer can disable whole locking functionality;
-* page url being lock can be composed with or without url parameters;
-* possible to keep history of locks (time, username, ...);
+* url of page being locked can be composed with or without url parameters;
+* history of locks can be kept (time, username, ...);
 * very customizable.
 
 ### Requirements
@@ -59,7 +61,7 @@ your application’s defined database.
 | Name                   | Type       | Description                                        |
 | ---------------------- | ---------- | -------------------------------------------------- |
 | API_INTERVAL           | integer    | interval between API calls from `js`               |
-| CAN_OPEN_MORE_TABS     | boolean    | whether use can open one page in more tabs         |
+| CAN_OPEN_MORE_TABS     | boolean    | whether user can open one page in more tabs        |
 | DISABLE_CRSF_TOKEN     | boolean    | whether app uses `CSRF` protection                 |
 | DISABLE                | boolean    | switching off/on locking logic                     |
 | HANDLER_CLASS          | string     | in case you want to define your handler            |
@@ -67,18 +69,19 @@ your application’s defined database.
 | KEEP_DB_LOCKS          | boolean    | keep locking history (only for DB model)           |
 | MESSAGES               | dictionary | for customizing messages (not implemented yet)     |
 | TIMEOUT                | integer    | interval user stays on the page without refreshing |
-| MODEL                  | string     | where data are stored (`redis` or `database`)      |
+| MODEL                  | string     | where data is stored (`redis` or `database`)       |
 | REDIS_SETTINGS         | dictionary | settings of app `redis`                            |
 | URL_IGNORE_PARAMETERS  | boolean    | whether url parameters are taken into account      |
 
 ### APIs
 
-#### 1. ClosePageConnection
-There are several `APIs` listed bellow. There are implemented in the way that they can be used by both frontend (`js`)
+Several `APIs` are listed below. These are implemented so that they can be used by both frontend (`js`)
 and backend (`python`). The logic is implemented in `handlers.py` and depends on chosen model as well.
 
-On the first glance, you can think that `GetPageInfo` and `OpenPageConnection` are same `APIs` but
-the functionality of first one doesn't change anything but second one.
+On the first glance, one could think that `GetPageInfo` and `OpenPageConnection` are the same, but
+the functionality of the first one doesn't change anything while the second one does.
+
+#### 1. ClosePageConnection
 
 | Method    |Name                | Type      | Description                                       |
 |---------- |------------------- | --------- | ------------------------------------------------- |
@@ -119,9 +122,9 @@ There are still several functionalities missing. I would appreciate any contribu
 * migrating logic related to reopening from `OpenPageConnection` to new API `ReopenPageConnection`;
 
 ### To be implemented soon:
-1. User lands on page. Page is locked for only this user.
-2. Other user attempts to open page.
-3. Other users get redirected to landing page (homepage, create new, and so on).
+1. User A lands on a page. The page is locked for this user.
+2. User B attempts to open the page.
+3. User B gets redirected to landing page (homepage, create new, and so on).
 
-### Users
-* ShowMax uses this package as part of Content Management System.
+### Uses
+* At [Showmax](https://tech.showmax.com/), we use this package as part of our Content Management System.
