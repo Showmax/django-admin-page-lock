@@ -28,8 +28,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license='Apache License, Version 2.0',
-    description='Page Lock application prevents users being able to edit '
-                'same page defined by its unique URL at the same time. '
+    description='Page Lock application prevents users from editing '
+                'a page while it is being edited by someone else. '
                 'The application is tailored to django admin implementation.',
     long_description=fread(README_FILE),
     url='https://github.com/ShowMax/django-admin-page-lock',
