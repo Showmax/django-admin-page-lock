@@ -32,6 +32,7 @@ setup(
                 'a page while it is being edited by someone else. '
                 'The application is tailored to django admin implementation.',
     long_description=fread(README_FILE),
+    long_description_content_type='text/markdown',
     url='https://github.com/ShowMax/django-admin-page-lock',
     author='Vojtech Stefka',
     author_email='oss+djangopage@showmax.com',
