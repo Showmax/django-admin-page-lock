@@ -3,7 +3,7 @@
 Page Lock for Django Admin allows developers to implement customizable locking of pages.
 With Admin Page Locking, only the designated (typically first) user receives full rights.
 Subsequent users only get rights assigned by the administrator. You can store page lock data in
-your application’s defined database.
+your application's defined database.
 
 Read more on [our blog](https://tech.showmax.com/2018/02/django-admin-page-lock/).
 
