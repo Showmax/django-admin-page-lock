@@ -18,7 +18,7 @@ except ImportError:
 class BasePageLockModel(object):
     @classmethod
     def _get_page_full_url(cls, req):
-        if hasattr(req, 'body') and 'url' in req.body:
+        if hasattr(req, 'body') and b'url' in req.body:
             # Get `url` from body (JS call).
             page_full_url = json.loads(req.body)['url']
         else:
