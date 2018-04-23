@@ -18,11 +18,30 @@ except ImportError:
 class BasePageLockModel(object):
     @classmethod
     def _get_page_full_url(cls, req):
-        if hasattr(req, 'body') and b'url' in req.body:
-            # Get `url` from body (JS call).
-            page_full_url = json.loads(req.body)['url']
+        """Return full page URL."""
+        #
+        # We need to peek into the request's POST data.
+        # As this is not considered a good practice, please read the following
+        # documentation articles to understand the implications:
+        #
+        # https://docs.djangoproject.com/en/2.0/topics/http/middleware/#process-view  # noqa: E501
+        # https://docs.djangoproject.com/en/2.0/topics/http/file-uploads/#id1
+        #
+        # We iterate all the POSTed items looking for one containing
+        # a string that identifies our upload. If we find it, we fetch
+        # the QueryDict item and decode the embedded JSON.
+        #
+        lock_url = ''
+
+        for key in req.POST.keys():
+            if 'user_reference' in key:
+                lock_url = json.loads(key)['url']
+
+        if lock_url:
+            # Get `url` from POST data (JavaScript call).
+            page_full_url = lock_url
         else:
-            # Get `url` by request function (Django view/adminview).
+            # Get `url` by request function (Django view/admin view).
             page_full_url = req.get_full_path()
 
         return page_full_url
