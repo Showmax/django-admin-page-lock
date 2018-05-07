@@ -76,7 +76,7 @@ $(document).ready(function() {
 
     var call_api = function(url) {
         var data = {
-            'url': get_full_url(),
+            'url': encodeURIComponent(get_full_url()),
             'user_reference': user_reference,
         };
 
