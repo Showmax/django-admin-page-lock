@@ -168,7 +168,7 @@ $(document).ready(function() {
         // When user click `REFRESH` button then page lock can not deactivate same user refreshing page.
         var url = get_base_url() + '/page_lock/close_page_connection/';
         var data = {
-            'url': get_full_url(),
+            'url': encodeURIComponent(get_full_url()),
             'user_reference': user_reference,
         };
         response = send_request(url, data);
