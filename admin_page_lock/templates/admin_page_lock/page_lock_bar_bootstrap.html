@@ -1,0 +1,9 @@
+{% load i18n %}
+<div class="page_lock_bar">
+    <p><i class="glyphicon glyphicon-lock"></i> <span id="page_lock_counter_display"></span></p>
+    <button class="btn btn-danger btn-xs" type="button" id="page_lock_refresh_button">{% trans "REFRESH" %}</button>
+    <button class="btn btn-primary btn-xs" type="button" id="page_lock_reload_button">{% trans "RELOAD" %}</button>
+    <p id="page_lock_message_display"></p>
+    <input type="hidden" id="page_lock_template_data" value="{{ page_lock_template_data }}">
+    <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
+</div>
