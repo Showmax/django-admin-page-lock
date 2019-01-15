@@ -21,8 +21,8 @@ Read more on [our blog](https://tech.showmax.com/2018/02/django-admin-page-lock/
 * very customizable.
 
 ### Requirements
-* Django 1.8;
-* Python 2.7.
+* Django 1.8, 1.9, 1.11, 2.0;
+* Python 2.7, 3.6, 3.7.
 
 ### Instalation
 * run `pip install django-admin-page-lock`;
@@ -41,7 +41,7 @@ Read more on [our blog](https://tech.showmax.com/2018/02/django-admin-page-lock/
         <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
     </div>
     ```
-  or using template tags `page_lock_bar_bootstrap` or `page_lock_bar_plain`. 
+  or using template tags `page_lock_bar_bootstrap` or `page_lock_bar_plain`.
   Note:
   * to hide locking buttons for pages where locking logic is not needed, update template by adding js block:
   ```

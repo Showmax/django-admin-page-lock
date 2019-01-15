@@ -12,8 +12,8 @@ def page_lock_bar_bootstrap(context):
     return render_to_string(
         'admin_page_lock/page_lock_bar_bootstrap.html',
         {
-            'page_lock_template_data': context['page_lock_template_data'],
-            'page_lock_api_interval': context['page_lock_api_interval']
+            'page_lock_template_data': context.get('page_lock_template_data'),
+            'page_lock_api_interval': context.get('page_lock_api_interval')
         }
     )
 
@@ -24,7 +24,7 @@ def page_lock_bar_plain(context):
     return render_to_string(
         'admin_page_lock/page_lock_bar_plain.html',
         {
-            'page_lock_template_data': context['page_lock_template_data'],
-            'page_lock_api_interval': context['page_lock_api_interval']
+            'page_lock_template_data': context.get('page_lock_template_data'),
+            'page_lock_api_interval': context.get('page_lock_api_interval')
         }
     )
