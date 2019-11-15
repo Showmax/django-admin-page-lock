@@ -11,6 +11,7 @@ class DatabasePageLockModelAdmin(admin.ModelAdmin):
         'locked',
         'url',
         'url_parameters',
+        'tab_counter',
     )
     list_display = (
         'url',
@@ -20,8 +21,9 @@ class DatabasePageLockModelAdmin(admin.ModelAdmin):
         'locked',
         'formated_locked_at',
         'formated_locked_out',
+        'tab_counter',
     )
-    list_filter = (
+    list_filter = (model
         'active',
         'user_reference',
     )

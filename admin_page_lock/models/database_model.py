@@ -27,6 +27,7 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
     locked = models.BooleanField(default=True)
     locked_at = models.DateTimeField(db_index=True)
     locked_out = models.DateTimeField(db_index=True)
+    tab_counter = models.PositiveSmallIntegerField(default=0)
 
     def __unicode__(self):
         return '{}'.format(self.pk)
@@ -71,7 +72,8 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
         return {
             'locked_at': page_lock.locked_at,
             'locked_out': page_lock.locked_out,
-            'user_reference': page_lock.user_reference
+            'user_reference': page_lock.user_reference,
+            'tab_counter': page_lock.tab_counter,
         }
 
     def save(self, *args, **kwargs):
