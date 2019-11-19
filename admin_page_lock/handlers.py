@@ -6,6 +6,8 @@ import logging
 from django.middleware.csrf import get_token
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
+from admin_page_lock import settings
 from admin_page_lock.settings import (
     DISABLE_CRSF_TOKEN,
     HOMEPAGE,
@@ -68,9 +70,28 @@ class PageLockHandler(object):
         # Deactivate lock if user is locking current page.
         if (
             data is not None and
-            data['user_reference'] == self.page_settings['user_reference']
+            data['user_reference'] == self.page_settings['user_reference'] and
+            data['tab_counter'] == 1
         ):
             self.model_class.deactivate(self.page_settings)
+            return {'is_locked': False}
+        elif (
+            data is not None and
+            data['user_reference'] == self.page_settings['user_reference'] and
+            data['tab_counter'] >= 1
+        ):
+            # Deactivate previous data.
+            self.model_class.deactivate(self.page_settings)
+            self.model_class.set_data(
+                self.page_settings,
+                {
+                    'locked_at': data['locked_at'],
+                    'locked_out': data['locked_out'],
+                    'user_reference': data['user_reference'],
+                    'tab_counter': data['tab_counter'] - 1,
+                }
+            )
+            return {'is_locked': True}
 
         return {'is_locked': False}
 
@@ -153,40 +174,18 @@ class PageLockHandler(object):
                 {
                     'locked_at': locked_at,
                     'locked_out': locked_out,
-                    'user_reference': locked_by
-                }
-            )
-
-        # 2. Page is locked by same user.
-        elif (
-            data is not None and
-            self.page_settings['user_reference'] == data['user_reference']
-        ):
-            is_locked = True
-            locked_by = data['user_reference']
-            reconnected = True
-            reconnect_in = TIMEOUT
-
-            # Deactivate previous data.
-            self.model_class.deactivate(self.page_settings)
-
-            # Store new data in storage.
-            locked_at = self._get_now()
-            locked_out = locked_at + datetime.timedelta(
-                seconds=TIMEOUT)
-
-            self.model_class.set_data(
-                self.page_settings,
-                {
-                    'locked_at': locked_at,
-                    'locked_out': locked_out,
                     'user_reference': locked_by,
+                    'tab_counter': 1,
                 }
             )
-        # 3. Page is locked by another user.
+
+        # 2. Page is locked by another user or user can't open multiple tabs.
         elif (
             data is not None and
-            self.page_settings['user_reference'] != data['user_reference']
+            (
+                self.page_settings['user_reference'] != data['user_reference']
+                or not settings.CAN_OPEN_MORE_TABS
+            )
         ):
             is_locked = True
             locked_by = data['user_reference']
@@ -197,6 +196,39 @@ class PageLockHandler(object):
             dtime = locked_out - now
             if dtime.seconds < TIMEOUT:
                 reconnect_in = dtime.seconds
+
+        # 3. Page is locked by same user.
+        elif (
+            data is not None and
+            self.page_settings['user_reference'] == data['user_reference']
+        ):
+            is_locked = True
+            locked_by = data['user_reference']
+            tab_counter = data['tab_counter']
+            reconnected = True
+            reconnect_in = TIMEOUT
+
+            # Deactivate previous data.
+            self.model_class.deactivate(self.page_settings)
+
+            # Store new data in storage.
+            locked_at = self._get_now()
+            locked_out = locked_at + datetime.timedelta(seconds=TIMEOUT)
+
+            self.model_class.set_data(
+                self.page_settings,
+                {
+                    'locked_at': locked_at,
+                    'locked_out': locked_out,
+                    'user_reference': locked_by,
+                    'tab_counter': tab_counter + 1,
+                }
+            )
+
+        # 4. Impossible situation, placed here for regression.
+        else:
+            raise RuntimeError(
+                'Can\'t open page connection due to erroneous state.')
 
         response_data.update({
             'is_locked': is_locked,
