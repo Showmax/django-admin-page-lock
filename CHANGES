@@ -1,5 +1,23 @@
 Changelog
 =========
++ `2.1.1 (2019-11-20)`
+    Fix redirect on homepage when multiple tabs are open.
+
++ `2.1.0 (2019-01-15)`
+    Fix templatetags, Django 2.0 Compability.
+
++ `2.0.6 (2018-12-12)`
+    Include Page Lock Bar in templatetags.
+
++ `2.0.5 (2018-05-09)`
+    Encode url in close_page_connection().
+
++ `2.0.3 (2018-04-23)`
+    Fix RawPostDataException.
+
++ `2.0.0 (2018-04-16)`
+    Python 3 and Django 1.11 compabilty.
+
 + `1.2.3 (2018-01-23)`
     Raise error when API call fails.
 
