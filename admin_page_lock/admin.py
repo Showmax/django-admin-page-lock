@@ -23,7 +23,7 @@ class DatabasePageLockModelAdmin(admin.ModelAdmin):
         'formated_locked_out',
         'tab_counter',
     )
-    list_filter = (model
+    list_filter = (
         'active',
         'user_reference',
     )

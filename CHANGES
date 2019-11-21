@@ -1,5 +1,8 @@
 Changelog
 =========
++ `2.1.2 (2019-11-21)`
+    Fix typo.
+
 + `2.1.1 (2019-11-20)`
     Fix redirect on homepage when multiple tabs are open.
 
