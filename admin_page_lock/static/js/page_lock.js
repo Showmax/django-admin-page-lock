@@ -48,7 +48,7 @@ $(document).ready(function() {
     };
 
     // Ajax function.
-    var send_request = function(url, data) {
+    var send_request = function(url, data, async=false) {
       var tmp = null;
       $.ajax({
         method: 'POST',
@@ -58,7 +58,7 @@ $(document).ready(function() {
         },
         data: JSON.stringify(data),
         dataType: 'json',
-        async: true,
+        async: async,
         success: function(response) {
             tmp = response;
         }
@@ -171,7 +171,7 @@ $(document).ready(function() {
             'url': encodeURIComponent(get_full_url()),
             'user_reference': user_reference,
         };
-        response = send_request(url, data);
+        send_request(url, data, true);
         clearInterval(window.process_data_interval);
     });
 });
