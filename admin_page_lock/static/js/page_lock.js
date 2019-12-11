@@ -32,23 +32,23 @@ $(document).ready(function() {
     // Get full url of current page.
     var get_full_url = function() {
         return window.location.href;
-    }
+    };
 
     // Get base url of current page.
     var get_base_url = function() {
         var full_url = get_full_url();
         var full_url_splitted = full_url.split('/');
         return full_url_splitted[0] + '//' + full_url_splitted[2];
-    }
+    };
 
     var redirect_to_homepage = function() {
         var homepage = data_to_process.page_lock_settings.homepage;
-        var homepage_url = get_base_url() + homepage
+        var homepage_url = get_base_url() + homepage;
         $(location).attr('href', homepage_url)
-    }
+    };
 
     // Ajax function.
-    var send_request = function(url, data) {
+    var send_request = function(url, data, async=false) {
       var tmp = null;
       $.ajax({
         method: 'POST',
@@ -58,11 +58,11 @@ $(document).ready(function() {
         },
         data: JSON.stringify(data),
         dataType: 'json',
-        async: false,
+        async: async,
         success: function(response) {
             tmp = response;
         }
-      })
+      });
 
       return tmp;
     };
@@ -109,7 +109,7 @@ $(document).ready(function() {
         var url = get_base_url() + '/page_lock/open_page_connection/';
 
         return call_api(url);
-    }
+    };
 
     var update_page = function(data) {
         $('#page_lock_message_display').text(messages.message_locked);
@@ -141,7 +141,7 @@ $(document).ready(function() {
         if (data.reconnect_in == 0 && locked_by_me) {
             redirect_to_homepage();
         }
-    }
+    };
 
     var periodical_update = function() {
         if (!data_to_process) {
@@ -155,7 +155,7 @@ $(document).ready(function() {
             data_to_process = call_get_page_info_data();
         }
         update_page(data_to_process);
-    }
+    };
 
     // Call `periodical_update` once and then every `api_interval` [ms].
     template_data = get_template_data();
@@ -171,7 +171,7 @@ $(document).ready(function() {
             'url': encodeURIComponent(get_full_url()),
             'user_reference': user_reference,
         };
-        response = send_request(url, data);
+        send_request(url, data, true);
         clearInterval(window.process_data_interval);
     });
 });
