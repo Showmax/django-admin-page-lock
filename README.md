@@ -7,57 +7,118 @@ your application's defined database.
 
 Read more on [our blog](https://tech.showmax.com/2018/02/django-admin-page-lock/).
 
-#### Use Case:
-1. User-1 lands on a page. User1 has full rights (editing).
-2. Users-N can view the page, but cannot use full rights (no editing).
-3. User-1 leaves.
-4. Whoever next enters, or refreshes, becomes User-1.
+## Use Case:
+1. `FirstUser` lands on a page. `FirstUser` has now full rights (editing), and
+   it's the owner of the lock.
+2. `AnyOtherUser` can view the page, but cannot use full rights (no editing).
+3. `FirstUser` leaves the page.
+4. Whoever next enters, or refreshes, has now full rights (editing) and is the
+   owner of the lock.
 
-### Features
-* two models for data storage (`redis` or `database`);
-* developer can disable whole locking functionality;
-* url of page being locked can be composed with or without url parameters;
-* history of locks can be kept (time, username, ...);
-* very customizable.
+## Features
+* Two models for data storage: `redis` or `database`;
+* The developer can disable whole locking functionality;
+* Url of a page being locked can be composed with or without url parameters;
+* History of locks can be kept (i.e. time, username);
+* Very customizable.
 
-### Requirements
-* Django 1.8, 1.9, 1.11, 2.0;
-* Python 2.7, 3.6, 3.7.
+## Requirements
+* Django 1.8, 1.9, 1.11, 2.0, 2.1, 2.2;
+* Python 2.7, 3.6, 3.7, 3.8, 3.9.
 
-### Instalation
-* run `pip install django-admin-page-lock`;
-* add `admin_page_lock` to `setings.py`;
-* run `./manage.py migrate` or `./manage.py syncdb`.
+## Installation
+Each of the following steps needs to be configured for the package to be fully functional.
 
-### Configuration
-* update template by adding:
-    ```
-    <div id="page_lock_bar">
-        <div id="page_lock_message_display"></div>
-        <div id="page_lock_counter_display"></div>
-        <button type="button" id="page_lock_refresh_button">{% trans "REFRESH" %}</button>
-        <button type="button" id="page_lock_reload_button">{% trans "RELOAD" %}</button>
-        <input type="hidden" id="page_lock_template_data" value="{{ page_lock_template_data }}">
-        <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
-    </div>
-    ```
-  or using template tags `page_lock_bar_bootstrap` or `page_lock_bar_plain`.
-  Note:
-  * to hide locking buttons for pages where locking logic is not needed, update template by adding js block:
-  ```
-  <script type="text/javascript">
-    $(document).ready(function() {
-        var api_interval = parseInt($('#page_lock_api_interval').val());
-        if (!api_interval) {
-            $('.page_lock_bar').hide();
-        }
-    });
-  </script>
-  ```;
-* mark `html` items by `class=page_lock_block` to hide/show them;
-* update `css` file in order to enhance included `html` code;
-* views where you want to apply locking logic must be inherited from either `PageLockAdminMixin` or `PageLockViewMixin` for `django admin views` or `django views`, respectively;
-* re-define parameters in your settings if you don't want to use default ones:
+### Getting the code
+The source code is currently hosted on GitHub at: https://github.com/Showmax/django-admin-page-lock
+
+Binary installers for the latest released version are available at the [Python Package Index (PyPI)](https://pypi.org/project/django-admin-page-lock/).
+
+To install it using pip, just run the following:
+```bash
+pip install django-admin-page-lock
+```
+
+
+### Prerequisites
+Make sure to add `'admin_page_lock'` to your `INSTALLED_APPS` setting:
+```python
+INSTALLED_APPS = [
+    # ...
+    'admin_page_lock',
+]
+```
+Don't forget to run `./manage.py migrate` or `./manage.py syncdb` after this change.
+
+## Usage
+
+### Templates
+To enable the Admin Page Lock you need to update the template where do you want to
+have it working. `base.html`, `change_form.html` and `change_list.html`
+should cover most of the use cases.
+
+On the chosen template, you have two options:
+1. Add the code bellow to the template, which gives you more freedom to customize it.
+```html
+<div id="page_lock_bar">
+    <div id="page_lock_message_display"></div>
+    <div id="page_lock_counter_display"></div>
+    <button type="button" id="page_lock_refresh_button">{% trans "REFRESH" %}</button>
+    <button type="button" id="page_lock_reload_button">{% trans "RELOAD" %}</button>
+    <input type="hidden" id="page_lock_template_data" value="{{ page_lock_template_data }}">
+    <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
+</div>
+```
+2. Use the template tags `page_lock_bar_bootstrap` or `page_lock_bar_plain`.
+```html
+{% load page_lock_bar_bootstrap %}
+...
+{% page_lock_bar_bootstrap %}
+```
+
+#### Disabling the locking logic
+To hide locking buttons for pages where locking logic is not needed,
+update the needed templates by adding the javascript block below.
+```html
+<script type="text/javascript">
+  $(document).ready(function() {
+      var api_interval = parseInt($('#page_lock_api_interval').val());
+      if (!api_interval) {
+          $('.page_lock_bar').hide();
+      }
+  });
+</script>
+```
+
+#### Hiding specific html items
+You can  mark `html` items by `class=page_lock_block` to hide/show them;
+
+### Views
+Views where you want to apply the locking logic must be inherited, use:
+* `PageLockAdminMixin` for Django Admin Views;
+* `PageLockViewMixin` for Django Views.
+
+```python
+# example/models.py
+from django.db import models
+from admin_page_lock.mixins import PageLockViewMixin
+
+
+class Example(PageLockViewMixin, models.Model):
+    ...
+
+# example/admin.py
+from admin_page_lock.mixins import PageLockAdminMixin
+from django.contrib import admin
+from .models import Example
+
+
+class ExampleAdmin(PageLockAdminMixin, admin.ModelAdmin):
+    ...
+```
+  
+### Settings parameters
+Re-define parameters in your settings if you don't want to use default ones:
 
 | Name                   | Type       | Description                                        |
 | ---------------------- | ---------- | -------------------------------------------------- |
@@ -74,15 +135,15 @@ Read more on [our blog](https://tech.showmax.com/2018/02/django-admin-page-lock/
 | REDIS_SETTINGS         | dictionary | settings of app `redis`                            |
 | URL_IGNORE_PARAMETERS  | boolean    | whether url parameters are taken into account      |
 
-### APIs
+## APIs
 
 Several `APIs` are listed below. These are implemented so that they can be used by both frontend (`js`)
 and backend (`python`). The logic is implemented in `handlers.py` and depends on chosen model as well.
 
-On the first glance, one could think that `GetPageInfo` and `OpenPageConnection` are the same, but
+At a first glance, one could think that `GetPageInfo` and `OpenPageConnection` are the same, but
 the functionality of the first one doesn't change anything while the second one does.
 
-#### 1. ClosePageConnection
+### 1. ClosePageConnection
 
 | Method    |Name                | Type      | Description                                       |
 |---------- |------------------- | --------- | ------------------------------------------------- |
@@ -91,19 +152,7 @@ the functionality of the first one doesn't change anything while the second one 
 | POST      | csrf_token         | string    | generated `csfr` protection token                 |
 | GET       | is_locked          | boolean   | whether the page is locked                        |
 
-#### 2. GetPageInfo
-
-| Method    |Name                | Type      | Description                                       |
-|---------- |------------------- | --------- | ------------------------------------------------- |
-| POST      | url                | string    | url of the page                                   |
-| POST      | user_reference     | string    | reference of user (`id` or `current section` )    |
-| POST      | csrf_token         | string    | generated `csfr` protection token                 |
-| GET       | is_locked          | boolean   | whether the page is locked                        |
-| GET       | locked_by          | string    | user_reference of user locking current page       |
-| GET       | page_lock_settings | dictionary| various parameters of settings                    |
-| GET       | reconnected        | boolean   | whether user is reconnected (not implemented yet) |
-
-#### 3. OpenPageConnection
+### 2. GetPageInfo
 
 | Method    |Name                | Type      | Description                                       |
 |---------- |------------------- | --------- | ------------------------------------------------- |
@@ -115,17 +164,29 @@ the functionality of the first one doesn't change anything while the second one 
 | GET       | page_lock_settings | dictionary| various parameters of settings                    |
 | GET       | reconnected        | boolean   | whether user is reconnected (not implemented yet) |
 
+### 3. OpenPageConnection
 
-### TODO
+| Method    |Name                | Type      | Description                                       |
+|---------- |------------------- | --------- | ------------------------------------------------- |
+| POST      | url                | string    | url of the page                                   |
+| POST      | user_reference     | string    | reference of user (`id` or `current section` )    |
+| POST      | csrf_token         | string    | generated `csfr` protection token                 |
+| GET       | is_locked          | boolean   | whether the page is locked                        |
+| GET       | locked_by          | string    | user_reference of user locking current page       |
+| GET       | page_lock_settings | dictionary| various parameters of settings                    |
+| GET       | reconnected        | boolean   | whether user is reconnected (not implemented yet) |
+
+
+## TODO
 There are still several functionalities missing. I would appreciate any contribution.
 * writing unit tests;
 * finish using `CAN_OPEN_MORE_TABS` settings parameter;
 * migrating logic related to reopening from `OpenPageConnection` to new API `ReopenPageConnection`;
 
-### To be implemented soon:
+## To be implemented soon:
 1. User A lands on a page. The page is locked for this user.
 2. User B attempts to open the page.
 3. User B gets redirected to landing page (homepage, create new, and so on).
 
-### Uses
+## Uses
 * At [Showmax](https://tech.showmax.com/), we use this package as part of our Content Management System.
