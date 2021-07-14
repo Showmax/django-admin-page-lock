@@ -1,9 +1,12 @@
 ## Django Admin Page Lock
 
 Page Lock for Django Admin allows developers to implement customizable locking of pages.
-With Admin Page Locking, only the designated (typically first) user receives full rights.
-Subsequent users only get rights assigned by the administrator. You can store page lock data in
-your application's defined database.
+With Admin Page Locking, only the designated (typically first) user receives their regular
+permissions assigned, including edit permissions (if available for the user).
+Subsequent users only get limited permissions compared to those assigned to the first user, making
+sure that user will not be granted permission to edit that object while the lock is
+active and owned by another user. You can store page lock data in your application's
+defined database.
 
 Read more on [our blog](https://tech.showmax.com/2018/02/django-admin-page-lock/).
 
@@ -16,10 +19,10 @@ Read more on [our blog](https://tech.showmax.com/2018/02/django-admin-page-lock/
    owner of the lock.
 
 ## Features
-* Two models for data storage: `redis` or `database`;
-* The developer can disable whole locking functionality;
-* Url of a page being locked can be composed with or without url parameters;
-* History of locks can be kept (i.e. time, username);
+* Two models for data storage: `redis` or `database`.
+* The developer can disable whole locking functionality.
+* Url of a page being locked can be composed with or without url parameters.
+* History of locks can be kept (i.e. time, username).
 * Very customizable.
 
 ## Requirements
@@ -54,22 +57,33 @@ Don't forget to run `./manage.py migrate` or `./manage.py syncdb` after this cha
 
 ### Templates
 To enable the Admin Page Lock you need to update the template where do you want to
-have it working. `base.html`, `change_form.html` and `change_list.html`
+have it working. The templates `base.html`, `change_form.html` and `change_list.html`
 should cover most of the use cases.
 
 On the chosen template, you have two options:
 1. Add the code bellow to the template, which gives you more freedom to customize it.
 ```html
-<div id="page_lock_bar">
-    <div id="page_lock_message_display"></div>
-    <div id="page_lock_counter_display"></div>
-    <button type="button" id="page_lock_refresh_button">{% trans "REFRESH" %}</button>
-    <button type="button" id="page_lock_reload_button">{% trans "RELOAD" %}</button>
-    <input type="hidden" id="page_lock_template_data" value="{{ page_lock_template_data }}">
-    <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
-</div>
+{% load static %}
+<html>
+   <head>
+       <!-- Add the page_lock.js to the template  -->
+      <script src="{% static 'js/page_lock.js' %}"></script>
+   </head>
+   <body>
+       <!-- ...  -->
+       <div id="page_lock_bar">
+       <div id="page_lock_message_display"></div>
+       <div id="page_lock_counter_display"></div>
+       <button type="button" id="page_lock_refresh_button">{% trans "REFRESH" %}</button>
+       <button type="button" id="page_lock_reload_button">{% trans "RELOAD" %}</button>
+       <input type="hidden" id="page_lock_template_data" value="{{ page_lock_template_data }}">
+       <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
+       <!-- ...  -->
+   </body>
+</html>
 ```
 2. Use the template tags `page_lock_bar_bootstrap` or `page_lock_bar_plain`.
+The javascript is added automatically when using this method.
 ```html
 {% load page_lock_bar_bootstrap %}
 ...
@@ -91,7 +105,14 @@ update the needed templates by adding the javascript block below.
 ```
 
 #### Hiding specific html items
-You can  mark `html` items by `class=page_lock_block` to hide/show them;
+Add the class `page_lock_block` to any html tag you want to hide from users that are not
+currently holding the lock. One common usage for this feature is to hide submit
+buttons for users that are not holding the lock, for example:
+```html
+<div class="page_lock_block">
+   <input type="submit" value="Submit" />
+</div>
+```
 
 ### Views
 Views where you want to apply the locking logic must be inherited, use:
