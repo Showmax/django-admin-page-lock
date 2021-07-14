@@ -1,9 +1,9 @@
 ## Django Admin Page Lock
 
 Page Lock for Django Admin allows developers to implement customizable locking of pages.
-With Admin Page Locking, only the designated (typically first) user receives his regular
+With Admin Page Locking, only the designated (typically first) user receives their regular
 permissions assigned, including edit permissions (if available for the user).
-Subsequent users only get limited permissions from those assigned to him, making
+Subsequent users only get limited permissions compared to those assigned to the first user, making
 sure that user will not be granted permission to edit that object while the lock is
 active and owned by another user. You can store page lock data in your application's
 defined database.
@@ -106,8 +106,8 @@ update the needed templates by adding the javascript block below.
 
 #### Hiding specific html items
 Add the class `page_lock_block` to any html tag you want to hide from users that are not
-currently the owner of the lock. One common usage for this feature is to hide submit
-buttons for users that are not the owners of the lock, for example:
+currently holding the lock. One common usage for this feature is to hide submit
+buttons for users that are not holding the lock, for example:
 ```html
 <div class="page_lock_block">
    <input type="submit" value="Submit" />
