@@ -84,8 +84,8 @@ class PageLockAdminMixin(BaseLockingMixin):
 
         return tuple(readonly_fields)
 
-    def has_add_permission(self, req):
-        can_add = super(PageLockAdminMixin, self).has_add_permission(req)
+    def has_add_permission(self, req, *args):
+        can_add = super(PageLockAdminMixin, self).has_add_permission(req, *args)
 
         if can_add and not self._is_locked(req):
             return True
