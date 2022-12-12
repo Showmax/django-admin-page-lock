@@ -2,11 +2,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils import timezone
+
 from admin_page_lock.models.base_model import BasePageLockModel
-from admin_page_lock.settings import (
-    KEEP_DB_LOCKS,
-    URL_IGNORE_PARAMETERS,
-)
+from admin_page_lock.settings import KEEP_DB_LOCKS, URL_IGNORE_PARAMETERS
 
 
 class DatabasePageLockModel(BasePageLockModel, models.Model):
@@ -20,6 +18,7 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
       + parameters   url parameters in JSON
       + url          url of locked page
     """
+
     url = models.URLField()
     url_parameters = models.CharField(max_length=1024, null=True, blank=True)
     active = models.BooleanField(default=True)
@@ -28,18 +27,21 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
     locked_at = models.DateTimeField(db_index=True)
     locked_out = models.DateTimeField(db_index=True)
     tab_counter = models.PositiveSmallIntegerField(default=0)
+    last_checked = models.DateTimeField(db_index=True, auto_now=True)
 
     def __unicode__(self):
-        return '{}'.format(self.pk)
+        return "{}".format(self.pk)
 
     @classmethod
     def _get_query_kwargs(cls, page_settings):
         query_kwargs = {
-            'active': True,
-            'url': page_settings['page_url'],
+            "active": True,
+            "url": page_settings["page_url"],
         }
         if not URL_IGNORE_PARAMETERS:
-            query_kwargs['url_parameters'] = page_settings['page_url_parameters']  # noqa: E501
+            query_kwargs["url_parameters"] = page_settings[
+                "page_url_parameters"
+            ]  # noqa: E501
 
         return query_kwargs
 
@@ -63,18 +65,28 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
         # Get the latest instance of `DatabasePageLockModel` and check
         # its existence.
         page_lock = page_locks.first()
-        if (
-            page_lock is None or
-            not isinstance(page_lock, cls)
-        ):
+        if page_lock is None or not isinstance(page_lock, cls):
             return None
 
         return {
-            'locked_at': page_lock.locked_at,
-            'locked_out': page_lock.locked_out,
-            'user_reference': page_lock.user_reference,
-            'tab_counter': page_lock.tab_counter,
+            "locked_at": page_lock.locked_at,
+            "locked_out": page_lock.locked_out,
+            "user_reference": page_lock.user_reference,
+            "tab_counter": page_lock.tab_counter,
+            "last_checked": page_lock.last_checked,
         }
+
+    @classmethod
+    def check_data(cls, page_settings):
+        """Update last_checked for consistency."""
+        query_kwargs = cls._get_query_kwargs(page_settings)
+        page_locks = cls.objects.filter(**query_kwargs)
+
+        # Filter out data with `locked_out` older then now.
+        page_locks = page_locks.filter(locked_out__gt=timezone.now())
+
+        if page_locks.exists():
+            page_locks.first().save()
 
     def save(self, *args, **kwargs):
         # Deactive current instance with `locked_out` older then now.
@@ -85,9 +97,9 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
 
     @classmethod
     def set_data(cls, page_settings, data):
-        data['url'] = page_settings['page_url']
+        data["url"] = page_settings["page_url"]
         if not URL_IGNORE_PARAMETERS:
-            data['url_parameters'] = page_settings['page_url_parameters']
+            data["url_parameters"] = page_settings["page_url_parameters"]
 
         try:
             cls.objects.create(**data)
@@ -95,7 +107,7 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
             raise
 
     class Meta:
-        ordering = ('locked_at',)
-        app_label = 'admin_page_lock'
-        verbose_name = 'Page Lock'
-        verbose_name_plural = 'Page Locks'
+        ordering = ("locked_at",)
+        app_label = "admin_page_lock"
+        verbose_name = "Page Lock"
+        verbose_name_plural = "Page Locks"
