@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('admin_page_lock', '0002_auto_20170605_1350'),
+        ("admin_page_lock", "0002_auto_20170605_1350"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='databasepagelockmodel',
-            name='tab_counter',
+            model_name="databasepagelockmodel",
+            name="tab_counter",
             field=models.PositiveSmallIntegerField(default=0),
         ),
     ]

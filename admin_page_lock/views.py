@@ -2,14 +2,13 @@ from __future__ import unicode_literals
 
 import json
 
-from django.http import (
-    HttpResponse,
-)
+from django.http import HttpResponse
 from django.views.generic.base import View
+
 from admin_page_lock.settings import (
     HANDLER_FUNCTION_CLOSE_PAGE_CONNECTION,
     HANDLER_FUNCTION_GET_PAGE_INFO,
-    HANDLER_FUNCTION_OPEN_PAGE_CONNECTION
+    HANDLER_FUNCTION_OPEN_PAGE_CONNECTION,
 )
 from admin_page_lock.utils import get_page_lock_classes
 
@@ -33,8 +32,7 @@ class BasePageView(View):
             raise e
 
         response = HttpResponse(
-            json.dumps(response_data),
-            content_type='application/json'
+            json.dumps(response_data), content_type="application/json"
         )
 
         return response
