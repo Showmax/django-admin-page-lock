@@ -34,7 +34,7 @@ class PageLockHandler(object):
         lock_settings = {
             "csrf_token": get_token(self.page_settings["req"])
             if not DISABLE_CRSF_TOKEN
-            else "",  # noqa: E501
+            else "",
             "homepage": HOMEPAGE,
             "messages": self.page_settings["messages"],
             "user_reference": self.page_settings["user_reference"],

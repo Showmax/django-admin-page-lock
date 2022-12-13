@@ -8,7 +8,7 @@ API_INTERVAL_DEFAULT = 30000  # [ms]
 API_INTERVAL_REFERENCE = "PAGE_LOCK_API_INTERVAL"
 API_INTERVAL = getattr(settings, API_INTERVAL_REFERENCE, API_INTERVAL_DEFAULT)
 
-# API interval.
+# Max number of API_INTERVAL checks fail before removing lock.
 MAX_FAILED_CHECK_DEFAULT = 2  # [Positive int]
 MAX_FAILED_CHECK_REFERENCE = "PAGE_LOCK_MAX_FAILED_CHECK"
 MAX_FAILED_CHECK = getattr(settings, MAX_FAILED_CHECK_REFERENCE, MAX_FAILED_CHECK_DEFAULT)
@@ -52,18 +52,18 @@ KEEP_DB_LOCKS_DEFAULT = False
 KEEP_DB_LOCKS_REFERENCE = "PAGE_LOCK_KEEP_DB_LOCKS"
 KEEP_DB_LOCKS = getattr(
     settings, KEEP_DB_LOCKS_REFERENCE, KEEP_DB_LOCKS_DEFAULT
-)  # noqa: E501
+)
 
 # Messages (see documentation).
 MESSAGES_DEFAUL = {
     "message_locked": _("Page is locked."),
     "message_reload": _(
         'You are the one who can edit. Click "RELOAD" button to stay on the page.'
-    ),  # noqa: E501
+    ),
     "message_refresh": _('Click "REFRESH" button to start editting.'),
     "message_problem": _(
         "Something happened, you will be redirected to homepage."
-    ),  # noqa: E501
+    ),
 }
 MESSAGES_REFERENCE = "PAGE_LOCK_MESSAGES"
 MESSAGES = getattr(settings, MESSAGES_REFERENCE, MESSAGES_DEFAUL)
