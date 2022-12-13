@@ -8,7 +8,8 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 from admin_page_lock import settings
-from admin_page_lock.settings import API_INTERVAL, DISABLE_CRSF_TOKEN, HOMEPAGE, TIMEOUT
+from admin_page_lock.settings import API_INTERVAL, DISABLE_CRSF_TOKEN, HOMEPAGE, \
+    TIMEOUT, MAX_FAILED_CHECK
 
 
 class PageLockHandler(object):
@@ -108,7 +109,7 @@ class PageLockHandler(object):
         data = self.model_class.get_data(self.page_settings)
 
         now = self._get_now()
-        interval_threshold = (API_INTERVAL / 1000) * 2  # (ms to s) * 2
+        interval_threshold = (API_INTERVAL / 1000) * MAX_FAILED_CHECK  # (ms to s) * #
 
         # 0. Lost contact with page.
         if (
