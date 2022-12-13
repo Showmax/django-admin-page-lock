@@ -3,14 +3,12 @@ from __future__ import unicode_literals
 import importlib
 
 from django.utils.crypto import get_random_string
-from admin_page_lock.settings import (
-    HANDLER_CLASS,
-    MODEL
-)
+
+from admin_page_lock.settings import HANDLER_CLASS, MODEL
 
 
 def get_page_lock_class(class_path):
-    module_name, class_name = class_path.rsplit('.', 1)
+    module_name, class_name = class_path.rsplit(".", 1)
     try:
         module = importlib.import_module(module_name)
         page_lock_class = getattr(module, class_name)
