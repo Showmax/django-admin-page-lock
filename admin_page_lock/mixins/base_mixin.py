@@ -28,8 +28,7 @@ class BaseLockingMixin(object):
 
         if (
             data["is_locked"]
-            and data["page_lock_settings"]["user_reference"]
-            != data["locked_by"]
+            and data["page_lock_settings"]["user_reference"] != data["locked_by"]
         ):
             # Adding message when page is locked.
             self._add_message(req, data)
@@ -71,8 +70,7 @@ class BaseLockingMixin(object):
         result = cls._get_page_info_data(req)
         if (
             result["is_locked"]
-            and result["page_lock_settings"]["user_reference"]
-            != result["locked_by"]
+            and result["page_lock_settings"]["user_reference"] != result["locked_by"]
         ):
             return True
 

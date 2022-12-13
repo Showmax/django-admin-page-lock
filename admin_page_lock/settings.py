@@ -11,7 +11,9 @@ API_INTERVAL = getattr(settings, API_INTERVAL_REFERENCE, API_INTERVAL_DEFAULT)
 # Max number of API_INTERVAL checks fail before removing lock.
 MAX_FAILED_CHECK_DEFAULT = 2  # [Positive int]
 MAX_FAILED_CHECK_REFERENCE = "PAGE_LOCK_MAX_FAILED_CHECK"
-MAX_FAILED_CHECK = getattr(settings, MAX_FAILED_CHECK_REFERENCE, MAX_FAILED_CHECK_DEFAULT)
+MAX_FAILED_CHECK = getattr(
+    settings, MAX_FAILED_CHECK_REFERENCE, MAX_FAILED_CHECK_DEFAULT
+)
 
 # User can open same page in more then one tabs.
 CAN_OPEN_MORE_TABS_DEFAULT = True
@@ -50,9 +52,7 @@ HOMEPAGE = getattr(settings, HOMEPAGE_REFERENCE, HOMEPAGE_DEFAULT)
 # Keep DB locks (possible to see history).
 KEEP_DB_LOCKS_DEFAULT = False
 KEEP_DB_LOCKS_REFERENCE = "PAGE_LOCK_KEEP_DB_LOCKS"
-KEEP_DB_LOCKS = getattr(
-    settings, KEEP_DB_LOCKS_REFERENCE, KEEP_DB_LOCKS_DEFAULT
-)
+KEEP_DB_LOCKS = getattr(settings, KEEP_DB_LOCKS_REFERENCE, KEEP_DB_LOCKS_DEFAULT)
 
 # Messages (see documentation).
 MESSAGES_DEFAUL = {
@@ -61,9 +61,7 @@ MESSAGES_DEFAUL = {
         'You are the one who can edit. Click "RELOAD" button to stay on the page.'
     ),
     "message_refresh": _('Click "REFRESH" button to start editting.'),
-    "message_problem": _(
-        "Something happened, you will be redirected to homepage."
-    ),
+    "message_problem": _("Something happened, you will be redirected to homepage."),
 }
 MESSAGES_REFERENCE = "PAGE_LOCK_MESSAGES"
 MESSAGES = getattr(settings, MESSAGES_REFERENCE, MESSAGES_DEFAUL)
