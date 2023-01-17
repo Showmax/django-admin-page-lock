@@ -39,9 +39,7 @@ class DatabasePageLockModel(BasePageLockModel, models.Model):
             "url": page_settings["page_url"],
         }
         if not URL_IGNORE_PARAMETERS:
-            query_kwargs["url_parameters"] = page_settings[
-                "page_url_parameters"
-            ]  # noqa: E501
+            query_kwargs["url_parameters"] = page_settings["page_url_parameters"]
 
         return query_kwargs
 

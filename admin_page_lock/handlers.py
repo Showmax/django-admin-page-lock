@@ -11,6 +11,7 @@ from admin_page_lock import settings
 from admin_page_lock.settings import (
     API_INTERVAL,
     DISABLE_CRSF_TOKEN,
+    ENABLE_FAILED_CHECK,
     HOMEPAGE,
     MAX_FAILED_CHECK,
     TIMEOUT,
@@ -118,7 +119,8 @@ class PageLockHandler(object):
 
         # 0. Lost contact with page.
         if (
-            data is not None
+            ENABLE_FAILED_CHECK
+            and data is not None
             and (now - data["last_checked"]).seconds >= interval_threshold
         ):
             self.model_class.deactivate(self.page_settings)
@@ -172,12 +174,15 @@ class PageLockHandler(object):
         response_data = {"page_lock_settings": self._get_lock_settings()}
         # Get data from storage.
         data = self.model_class.get_data(self.page_settings)
+
         now = self._get_now()
+        interval_threshold = (API_INTERVAL / 1000) * MAX_FAILED_CHECK  # (ms to s) * #
 
         # 0. Lost contact with page.
         if (
-            data is not None
-            and (now - data["last_checked"]).seconds >= 2 * API_INTERVAL
+            ENABLE_FAILED_CHECK
+            and data is not None
+            and (now - data["last_checked"]).seconds >= interval_threshold
         ):
             self.model_class.deactivate(self.page_settings)
             data = self.model_class.get_data(self.page_settings)
