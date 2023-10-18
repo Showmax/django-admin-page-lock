@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import json
 
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from admin_page_lock.settings import MESSAGES, URL_IGNORE_PARAMETERS
 

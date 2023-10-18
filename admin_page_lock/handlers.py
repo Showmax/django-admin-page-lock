@@ -5,7 +5,7 @@ import logging
 
 from django.middleware.csrf import get_token
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from admin_page_lock import settings
 from admin_page_lock.settings import (
