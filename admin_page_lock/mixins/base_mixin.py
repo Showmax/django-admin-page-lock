@@ -16,7 +16,7 @@ from admin_page_lock.utils import get_page_lock_classes
 
 
 class BaseLockingMixin(object):
-    lock_change_view = False
+    lock_change_view = True
     lock_changelist_view = False
 
     def _add_extra_content(self, req, data):
