@@ -64,26 +64,40 @@ On the chosen template, you have two options:
 1. Add the code bellow to the template, which gives you more freedom to customize it.
 ```html
 {% load static %}
+{% load i18n %}
 <html>
-   <head>
-       <!-- Add the page_lock.js to the template  -->
-      <script src="{% static 'js/page_lock.js' %}"></script>
-   </head>
-   <body>
-       <!-- ...  -->
-       <div id="page_lock_bar">
-       <div id="page_lock_message_display"></div>
-       <div id="page_lock_counter_display"></div>
-       <button type="button" id="page_lock_refresh_button">{% trans "REFRESH" %}</button>
-       <button type="button" id="page_lock_reload_button">{% trans "RELOAD" %}</button>
-       <input type="hidden" id="page_lock_template_data" value="{{ page_lock_template_data }}">
-       <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
-       <!-- ...  -->
-   </body>
+  <head>
+    <!-- Add the page_lock.js to the template  -->
+    <script src="{% static 'js/page_lock.js' %}"></script>
+  </head>
+  <body>
+    <!-- ... -->
+    <div id="page_lock_bar">
+      <div id="page_lock_message_display"></div>
+      <div id="page_lock_counter_display"></div>
+      <button type="button" id="page_lock_refresh_button">{% trans "REFRESH" %}</button>
+      <button type="button" id="page_lock_reload_button">{% trans "RELOAD" %}</button>
+      <input type="hidden" id="page_lock_template_data" value="{{ page_lock_template_data }}">
+      <input type="hidden" id="page_lock_api_interval" value="{{ page_lock_api_interval }}">
+    </div>
+    <!-- ... -->
+  </body>
 </html>
 ```
 2. Use the template tags `page_lock_bar_bootstrap` or `page_lock_bar_plain`.
 The javascript is added automatically when using this method.
+```python
+# settings.py
+
+TEMPLATES = [
+    ...
+    'OPTIONS': {
+        ...
+        'libraries': {
+            'page_lock_bar_bootstrap': 'admin_page_lock.templatetags.page_lock_bar'
+        },
+    }
+```
 ```html
 {% load page_lock_bar_bootstrap %}
 ...
@@ -137,7 +151,19 @@ from .models import Example
 class ExampleAdmin(PageLockAdminMixin, admin.ModelAdmin):
     ...
 ```
-  
+
+### Urls
+In order for the requests this module makes to work, add the following to your
+site's urlpatterns:
+```python
+# urls.py
+
+urlpatterns = [
+    ...
+    path('page_lock/', include('admin_page_lock.urls')),
+]
+```
+
 ### Settings parameters
 Re-define parameters in your settings if you don't want to use default ones:
 
