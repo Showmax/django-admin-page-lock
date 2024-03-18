@@ -1,3 +1,6 @@
+## Warning
+This repository is archived and is no longer maintained.
+
 ## Django Admin Page Lock
 
 Page Lock for Django Admin allows developers to implement customizable locking of pages.
